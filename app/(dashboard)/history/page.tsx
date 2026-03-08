@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Code2, FlaskConical, Clock, MessageSquare, Plus } from "lucide-react"
+import { useAutoError } from "@/hooks/useAutoError"
 
 import {
   Card,
@@ -67,7 +68,7 @@ export default function HistoryPage() {
   const [reviewSessions, setReviewSessions] = useState<ChatSessionDto[]>([])
   const [testcaseSessions, setTestcaseSessions] = useState<ChatSessionDto[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useAutoError()
 
   useEffect(() => {
     const load = async () => {
