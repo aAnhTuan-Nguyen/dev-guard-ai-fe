@@ -25,13 +25,30 @@ import { Separator } from "@/components/ui/separator"
 import TestCaseResultPanel from "@/components/testcase/TestCaseResultPanel"
 import { conversationTestCase } from "@/services/testcase"
 import { getSessionMessages } from "@/services/chat"
-import type { ChatMessageDto, ConversationTestCaseResult, TestCaseResult } from "@/types"
+import type {
+  ChatMessageDto,
+  ConversationTestCaseResult,
+  TestCaseResult,
+} from "@/types"
 import { cn } from "@/lib/utils"
 
 const LANGUAGES = [
-  "javascript", "typescript", "python", "java", "csharp",
-  "cpp", "go", "rust", "php", "ruby", "swift", "kotlin",
-  "html", "css", "sql", "plaintext",
+  "javascript",
+  "typescript",
+  "python",
+  "java",
+  "csharp",
+  "cpp",
+  "go",
+  "rust",
+  "php",
+  "ruby",
+  "swift",
+  "kotlin",
+  "html",
+  "css",
+  "sql",
+  "plaintext",
 ]
 
 type InputMode = "code" | "text"
@@ -61,7 +78,7 @@ export default function ConversationTestCasePage() {
       try {
         const history = await getSessionMessages(sessionId)
         const mapped: DisplayMessage[] = history.map((m: ChatMessageDto) => ({
-          role: m.role,
+          role: m.role === "User" ? "user" : "assistant",
           content: m.content,
         }))
         setMessages(mapped)
@@ -157,8 +174,12 @@ export default function ConversationTestCasePage() {
                 <FlaskConical className="size-8 text-primary/50" />
               </div>
               <div className="text-center space-y-1">
-                <p className="text-sm font-medium text-foreground">Chưa có tin nhắn</p>
-                <p className="text-xs">Gửi code để AI tự động sinh test cases.</p>
+                <p className="text-sm font-medium text-foreground">
+                  Chưa có tin nhắn
+                </p>
+                <p className="text-xs">
+                  Gửi code để AI tự động sinh test cases.
+                </p>
               </div>
             </div>
           )}
@@ -166,16 +187,17 @@ export default function ConversationTestCasePage() {
           {messages.map((msg, i) => (
             <div key={i} className="flex gap-3">
               {/* Avatar */}
-              <div className={cn(
-                "size-8 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                msg.role === "assistant"
-                  ? "bg-primary/10"
-                  : "bg-secondary",
-              )}>
-                {msg.role === "assistant"
-                  ? <Bot className="size-4 text-primary" />
-                  : <User className="size-4" />
-                }
+              <div
+                className={cn(
+                  "size-8 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+                  msg.role === "assistant" ? "bg-primary/10" : "bg-secondary",
+                )}
+              >
+                {msg.role === "assistant" ? (
+                  <Bot className="size-4 text-primary" />
+                ) : (
+                  <User className="size-4" />
+                )}
               </div>
 
               {/* Content */}
@@ -258,7 +280,9 @@ export default function ConversationTestCasePage() {
                 className="text-xs rounded-md border border-input bg-background px-2 py-1 h-8"
               >
                 {LANGUAGES.map((l) => (
-                  <option key={l} value={l}>{l}</option>
+                  <option key={l} value={l}>
+                    {l}
+                  </option>
                 ))}
               </select>
             )}
@@ -299,8 +323,7 @@ export default function ConversationTestCasePage() {
         <Button
           className="w-full"
           disabled={
-            loading ||
-            (inputMode === "code" ? !code.trim() : !text.trim())
+            loading || (inputMode === "code" ? !code.trim() : !text.trim())
           }
           onClick={handleSend}
         >

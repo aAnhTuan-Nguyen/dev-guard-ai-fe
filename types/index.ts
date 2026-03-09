@@ -24,12 +24,12 @@ export interface ChatSessionDto {
   title: string
   sessionType: SessionType
   createdAt: string
-  contextSummary: string
+  contextSummary: string | null // BE entity has string?
 }
 
 export interface ChatMessageDto {
   id: string
-  role: "user" | "assistant"
+  role: "User" | "AI" // matches BE ChatMessage.Role values
   content: string
   createdAt: string
 }
@@ -49,12 +49,12 @@ export interface Issue {
 }
 
 export interface ReviewResult {
-  language: string
+  language: string | null
   score: number
-  summary: string
-  issues: Issue[]
-  suggestions: string[]
-  improvedCode: string
+  summary: string | null
+  issues: Issue[] | null
+  suggestions: string[] | null
+  improvedCode: string | null
 }
 
 export interface ConversationReviewResult {
@@ -73,8 +73,8 @@ export interface TestCase {
 }
 
 export interface TestCaseResult {
-  language: string
-  testCases: TestCase[]
+  language: string | null
+  testCases: TestCase[] | null
 }
 
 export interface ConversationTestCaseResult {

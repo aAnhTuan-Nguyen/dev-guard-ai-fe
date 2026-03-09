@@ -1,14 +1,26 @@
 "use client"
 
 import { useState } from "react"
-import { FlaskConical, ChevronDown, CheckCircle2, Hash, ArrowRight, FileText } from "lucide-react"
+import {
+  FlaskConical,
+  ChevronDown,
+  CheckCircle2,
+  Hash,
+  ArrowRight,
+  FileText,
+} from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import type { TestCaseResult } from "@/types"
 
-export default function TestCaseResultPanel({ result }: { result: TestCaseResult }) {
+export default function TestCaseResultPanel({
+  result,
+}: {
+  result: TestCaseResult
+}) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+  const testCases = result.testCases ?? []
 
   const toggle = (i: number) => {
     setExpandedIndex(expandedIndex === i ? null : i)
@@ -25,10 +37,16 @@ export default function TestCaseResultPanel({ result }: { result: TestCaseResult
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center gap-2">
               <h3 className="font-semibold text-sm">Test Cases đã sinh</h3>
-              <Badge variant="outline" className="text-[11px]">{result.language}</Badge>
+              <Badge variant="outline" className="text-[11px]">
+                {result.language}
+              </Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              Tổng cộng <span className="font-medium text-foreground">{result.testCases.length}</span> test case được tạo
+              Tổng cộng{" "}
+              <span className="font-medium text-foreground">
+                {testCases.length}
+              </span>{" "}
+              test case được tạo
             </p>
           </div>
         </CardContent>
@@ -41,16 +59,13 @@ export default function TestCaseResultPanel({ result }: { result: TestCaseResult
             <CheckCircle2 className="size-4 text-green-500" />
             Danh sách Test Cases
             <Badge variant="secondary" className="text-[11px] ml-auto">
-              {result.testCases.length}
+              {testCases.length}
             </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {result.testCases.map((tc, i) => (
-            <div
-              key={i}
-              className="rounded-lg border overflow-hidden"
-            >
+          {testCases.map((tc, i) => (
+            <div key={i} className="rounded-lg border overflow-hidden">
               {/* Header - clickable */}
               <button
                 type="button"

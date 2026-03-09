@@ -2,7 +2,14 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { ShieldCheck, Code2, FlaskConical, History, LogOut } from "lucide-react"
+import {
+  ShieldCheck,
+  Code2,
+  FlaskConical,
+  History,
+  LogOut,
+  LogIn,
+} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/stores/authStore"
@@ -18,7 +25,7 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { email, logout } = useAuthStore()
+  const { email, logout, isAuthenticated } = useAuthStore()
 
   const handleLogout = () => {
     logout()
@@ -62,18 +69,29 @@ export default function Sidebar() {
       <Separator />
 
       {/* User info + logout */}
-      <div className="px-4 py-4 space-y-2">
-        <p className="text-xs text-muted-foreground truncate px-1">{email}</p>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
-          onClick={handleLogout}
-        >
-          <LogOut className="size-4" />
-          Đăng xuất
-        </Button>
-      </div>
+      {isAuthenticated ? (
+        <div className="px-4 py-4 space-y-2">
+          <p className="text-xs text-muted-foreground truncate px-1">{email}</p>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+            onClick={handleLogout}
+          >
+            <LogOut className="size-4" />
+            Đăng xuất
+          </Button>
+        </div>
+      ) : (
+        <div className="px-4 py-4">
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link href="/login">
+              <LogIn className="size-4 mr-2" />
+              Đăng nhập
+            </Link>
+          </Button>
+        </div>
+      )}
     </aside>
   )
 }
