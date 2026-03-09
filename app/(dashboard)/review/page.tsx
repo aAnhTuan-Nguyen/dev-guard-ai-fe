@@ -59,6 +59,10 @@ export default function ReviewPage() {
   }
 
   const handleStartConversation = async () => {
+    if (!isAuthenticated) {
+      router.push("/login")
+      return
+    }
     try {
       const { id } = await createSession({
         title: `Review — ${new Date().toLocaleString("vi-VN")}`,
@@ -66,7 +70,7 @@ export default function ReviewPage() {
       })
       router.push(`/review/${id}`)
     } catch {
-      setError("Không thể tạo session. Vui lòng đăng nhập.")
+      setError("Không thể tạo session. Vui lòng thử lại.")
     }
   }
 
@@ -83,12 +87,10 @@ export default function ReviewPage() {
             Dán code và nhận phản hồi từ AI. Không cần đăng nhập.
           </p>
         </div>
-        {isAuthenticated && (
-          <Button variant="outline" size="sm" onClick={handleStartConversation}>
-            <MessageSquarePlus className="size-4 mr-2" />
-            Review theo hội thoại
-          </Button>
-        )}
+        <Button variant="outline" size="sm" onClick={handleStartConversation}>
+          <MessageSquarePlus className="size-4 mr-2" />
+          Review theo hội thoại
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

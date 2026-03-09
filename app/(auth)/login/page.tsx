@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ShieldCheck, Loader2 } from "lucide-react"
+import { ShieldCheck, Loader2, ArrowLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -56,8 +56,16 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md relative">
       <CardHeader className="text-center">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="absolute top-4 left-4 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="size-4" />
+          Quay lại
+        </button>
         <div className="flex justify-center mb-2">
           <ShieldCheck className="size-10 text-primary" />
         </div>
