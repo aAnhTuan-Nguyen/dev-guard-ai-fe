@@ -16,9 +16,9 @@ import { cn } from "@/lib/utils"
 import type { ReviewResult } from "@/types"
 
 function severityColor(
-  severity: string,
+  severity: string | null | undefined,
 ): "destructive" | "default" | "secondary" | "outline" {
-  switch (severity.toLowerCase()) {
+  switch (severity?.toLowerCase()) {
     case "critical":
     case "error":
       return "destructive"
@@ -32,8 +32,8 @@ function severityColor(
   }
 }
 
-function severityIcon(severity: string) {
-  switch (severity.toLowerCase()) {
+function severityIcon(severity: string | null | undefined) {
+  switch (severity?.toLowerCase()) {
     case "critical":
     case "error":
       return <AlertTriangle className="size-4 text-destructive" />
