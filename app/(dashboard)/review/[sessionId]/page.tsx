@@ -76,10 +76,24 @@ export default function ConversationReviewPage() {
     const load = async () => {
       try {
         const history = await getSessionMessages(sessionId)
-        const mapped: DisplayMessage[] = history.map((m: ChatMessageDto) => ({
-          role: m.role === "User" ? "user" : "assistant",
-          content: m.content,
-        }))
+        const mapped: DisplayMessage[] = history.map((m: ChatMessageDto) => {
+          if (m.role === "AI") {
+            try {
+              const parsed = JSON.parse(m.content)
+              if (parsed && typeof parsed.score === "number") {
+                return {
+                  role: "assistant" as const,
+                  content: parsed.summary ?? "",
+                  review: parsed as ReviewResult,
+                }
+              }
+            } catch {
+              // not JSON — plain text follow-up answer
+            }
+            return { role: "assistant" as const, content: m.content }
+          }
+          return { role: "user" as const, content: m.content }
+        })
         setMessages(mapped)
       } catch {
         // Session might be new
